@@ -1,0 +1,35 @@
+import wd from 'wd';
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+const PORT = 4723;
+
+const opts = {
+  platformName: 'Android',
+  deviceName: 'Nexus_5X_API_29_x86',
+  app: '/Users/joonvena/Downloads/app-release.apk',
+};
+
+const driver = wd.promiseChainRemote('localhost', PORT);
+
+beforeAll(async () => {
+  await driver.init(opts);
+  await driver.sleep(3000);
+}); // Sometime for the app to load
+test('appium renders', async () => {
+  expect(await driver.hasElementByAccessibilityId('username')).toBe(true);
+  const username = await driver.elementByAccessibilityId('username');
+  expect(await driver.hasElementByAccessibilityId('password')).toBe(true);
+  const password = await driver.elementByAccessibilityId('password');
+});
+
+test('login is successful', async () => {
+  await driver.setImplicitWaitTimeout(5000);
+  const username = await driver.elementByAccessibilityId('username');
+  const password = await driver.elementByAccessibilityId('password');
+  const submit = await driver.elementByAccessibilityId('submit_login');
+  await username.sendKeys('joonvena@gmail.com');
+  await password.sendKeys('Testing12');
+  await submit.click();
+  const near_you_title = await driver.elementByAccessibilityId(
+    'near_you_title',
+  );
+});

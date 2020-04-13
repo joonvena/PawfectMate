@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    runtime-version:
+      android: 28
+    commands:
+      - npm install
+      - ./android/gradlew assembleRelease
+      - ls -la
+artifacts:
+  files:
+    - "./android/app/build/outputs/**/*.apk"
+  discard-paths: yes
